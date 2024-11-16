@@ -4,258 +4,426 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Locker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-	* {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-        }
+    .container {
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        display: flex;
+        height: 100vh;
+        width: 100%;
+    }
+    
+    .sidebar {
+    width: 20%;
+    background-color: #1E1E1E;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    justify-content: flex-start;
+    }
+    .sidebar2 {
+    width: 10%;
+    background-color: #1E1E1E;
+    border-right: 1px solid #ddd;
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+    justify-content: flex-start;
+    }
+    
+    .sidebar-buttons {
+        display: flex;
+        justify-content: space-between; /* Distribute buttons evenly */
+        margin-top: 20px;
+    }
+    
+    .sidebar-buttons .add-user, .sidebar-buttons .settings-button, .sidebar-buttons .extra-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        cursor: pointer;
+        color: white;
+        background-color: #007bff;
+        border-radius: 25%;
+        width: 40px;
+        height: 40px;
+        margin: 10px;
+        font-size: 24px;
+    }
+    
+    .sidebar-buttons .add-user:hover,
+    .sidebar-buttons .settings-button:hover,
+    .sidebar-buttons .extra-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .sidebar-header {
+        padding: 20px;
+        background-color: #1E1E1E;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .chat-list {
+        list-style: none;
+        padding: 20px;
+        flex: 1;
+        overflow-y: auto;
+    }
+    
+    .chat-item {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+    
+    .chat-item .avatar {
+        width: 30px;
+        height: 30px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    
+    .chat-item .info {
+        display: flex;
+        flex-direction: column; /* Stack the name and file under each other */
+    }
+    
+    .chat-item strong {
+        font-size: 16px;
+        margin-bottom: 5px; /* Adds space between name and file name */
+    }
+    
+    .chat-item small {
+        color: gray;
+        font-size: 12px;
+    }
+    
+    /* Add User Button */
+    .add-user {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        cursor: pointer;
+        color: white;
+        background-color: #007bff;
+        border-radius: 25%;
+        width: 40px;
+        height: 40px;
+        margin: 10px auto;
+        font-size: 24px;
+    }
+    
+    .add-user:hover {
+        background-color: #0056b3;
+    }
+    
+    .chat-area {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .chat-header {
+        padding: 20px;
+        background-color: #1E1E1E;
+        color: white;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+    
+    .chat-messages {
+        flex: 1;
+        padding: 20px;
+        background-color: #ece5dd;
+        overflow-y: auto;
+    }
+    
+    .message {
+        margin-bottom: 15px;
+    }
+    
+    .message.sent {
+        text-align: right;
+    }
+    
+    .message p {
+        display: inline-block;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+    
+    .message.sent p {
+        background-color: #dcf8c6;
+    }
+    
+    .chat-footer {
+        padding: 20px;
+        background-color: #1E1E1E;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+    
+    .chat-footer input {
+        flex: 1;
+        margin-right: 10px;
+        background-color: white;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    .chat-footer button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius:25%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .chat-footer button:hover {
+        background-color: #0056b3;
+    }
+    
+    .chat-footer button .material-icons {
+        font-size: 20px;
+    }
+    
+    /* File Upload Section */
+    .file-upload-section {
+        flex: 1;
+        padding: 0px;
+        background-color: #1E1E1E;
+        display: none;
+    }
+    
+    .file-upload-section.active {
+        display: block;
+    }
 
-        .container {
-            display: flex;
-            height: 100vh;
-            width: 100%;
-        }
+    .file-upload-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 10;
+        border-radius: 25px;
+        border: 1px solid #ccc;
+    }
+    
+    .title {
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+        background-color: #0000;
+        color: white;
+        font-size: 30px;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    .file-upload-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    .file-upload-body {
+        display: flex;
+        padding: 10px;
+    }
+            
+    .expiry-controls {
+        width: 50%;
+        padding-right: 10px;
+        border-right: 1px solid #ccc;
+        color: white;
+    }
+    
+    .expiry-checkbox {
+        margin-bottom: 10px;
+    }
+    
+    .expiry-options {
+        margin-top: 10px;
+    }
+    
+    .expiry-options input {
+        margin-bottom: 10px;
+    }
+    
+    
+    .algorithms-section {
+        width: 50%;
+        padding-left: 10px;
+    }
+    
+    .algorithms-list {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 10px;
+        overflow-y: auto;
+        max-height: 240px;
+        color:white;
+    }
+    
+    .algorithm-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .algorithm-item label {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+    
+    .algorithm-item select,
+    .algorithm-item input {
+        padding: 5px;
+        margin-right: 10px;
+    }
+    
+    .algorithm-password {
+        flex: 1;
+        padding: 5px;
+    }
+    
+    .controls {
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .controls button {
+        padding: 10px 20px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        margin: 5px;
+    }
+    
+/* Media Pane Section */
+.media-pane-section {
+    width: 40%;
+    background-color: #1E1E1E;
+    display: none; /* Hidden initially */
+    padding: 20px;
+    color: white;
+}
 
-        .sidebar {
-            width: 20%;
-            background-color: #1E1E1E;
-            border-right: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-        }
+.media-pane-section.active {
+    display: block;
+}
 
-        .sidebar-header {
-            padding: 20px;
-            background-color: #1E1E1E;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-        }
+.media-pane-container {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin: auto;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
 
-        .chat-list {
-            list-style: none;
-            padding: 20px;
-            flex: 1;
-            overflow-y: auto;
-        }
+.media-list {
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 80%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between media items */
+}
 
-        .chat-item {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
-            color: white;
-        }
+.media-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px; /* Space between thumbnail and details */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #282828;
+}
 
-        .chat-item:hover {
-            background-color: #e6e6e6;
-            color: black;
-        }
+.media-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10%;
+    border: 1px solid #444;
+}
 
-        .chat-item strong {
-            display: block;
-            font-size: 16px;
-        }
+.media-details {
+    flex: 1;
+}
 
-        .chat-item small {
-            display: block;
-            color: gray;
-            font-size: 12px;
-        }
+.media-details strong {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
 
-        /* Add User Button */
-        .add-user {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            cursor: pointer;
-            color: white;
-            background-color: blue;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            margin: 10px auto;
-            font-size: 24px;
-        }
+.media-details p {
+    font-size: 14px;
+    margin: 5px 0;
+}
 
-        .add-user:hover {
-            background-color: darkblue;
-        }
+.media-controls {
+    margin-top: 20px;
+    text-align: center;
+}
 
-        .chat-area {
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-        }
+.media-controls button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
 
-        .chat-header {
-            padding: 20px;
-            background-color: #1E1E1E;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            background-color: #ece5dd;
-            overflow-y: auto;
-        }
-
-        .message {
-            margin-bottom: 15px;
-        }
-
-        .message.sent {
-            text-align: right;
-        }
-
-        .message p {
-            display: inline-block;
-            padding: 10px 15px;
-            border-radius: 10px;
-            background-color: #fff;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-        }
-
-        .message.sent p {
-            background-color: #dcf8c6;
-        }
-
-        .chat-footer {
-            padding: 10px;
-            background-color: #1E1E1E;
-            display: flex;
-            align-items: center;
-        }
-
-        .chat-footer input {
-            width: 80%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-        }
-
-        .chat-footer button {
-            background-color: blue;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin-left: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        /* File Upload Section */
-        .file-upload-section {
-            flex: 1;
-            padding: 20px;
-            background-color: #1E1E1E;
-            display: none;
-        }
-
-        .file-upload-section.active {
-            display: block;
-        }
-        .file-upload-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
-            border: 1px solid #ccc;
-        }
-
-        .title {
-            text-align: center;
-            padding: 10px;
-            font-weight: bold;
-            background-color: #f0f0f0;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .file-upload-header {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            font-weight: bold;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .file-upload-body {
-            display: flex;
-            padding: 10px;
-        }
-        
-        .expiry-controls {
-            width: 50%;
-            padding-right: 10px;
-            border-right: 1px solid #ccc;
-        }
-
-        .expiry-checkbox {
-            margin-bottom: 10px;
-        }
-
-        .expiry-options {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .algorithms-section {
-            width: 50%;
-            padding-left: 10px;
-        }
-
-        .algorithms-list {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
-            overflow-y: auto;
-            max-height: 150px;
-        }
-
-        .algorithm-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .algorithm-item label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        .algorithm-item select,
-        .algorithm-item input {
-            padding: 5px;
-            margin-right: 10px;
-        }
-
-        .algorithm-password {
-            flex: 1;
-            padding: 5px;
-        }
-
-        .controls {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .controls button {
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: blue;
-            color: white;
-            margin: 5px;
-        }
+.media-controls button:hover {
+    background-color: #0056b3;
+}
     </style>
 </head>
 
@@ -264,25 +432,79 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
+                <button class="btn btn-outline-primary" type="button"  onclick="closeSidebar()" style="position: absolute;left: 0%;top: 2%;"><span class="material-icons">menu</span></button>
                 Smart Locker
             </div>
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="button"><span class="material-icons">search</span></button>
+                </div>
+            </div>
+
             <ul class="chat-list" id="chatList">
                 <li class="chat-item" id="john-doe" onclick="loadChat('John Doe', johnDoeMessages)">
-                    <strong>John Doe</strong>
-                    <small>File 1</small>
+                    <div class="avatar">J</div>
+                    <div class="info">
+                        <strong>John Doe</strong>
+                        <small>File 1</small>
+                    </div>
                 </li>
+
                 <li class="chat-item" id="jane-smith" onclick="loadChat('Jane Smith', janeSmithMessages)">
-                    <strong>Jane Smith</strong>
-                    <small>File 10</small>
+                <div class="avatar">J</div>
+                    <div class="info">
+                        <strong>Jane Smith</strong>
+                        <small>File 10</small>
+                    </div>            
                 </li>
                 <li class="chat-item" id="mark-johnson" onclick="loadChat('Mark Johnson', markJohnsonMessages)">
-                    <strong>Mark Johnson</strong>
-                    <small>File 20</small>
+                    <div class="avatar">J</div>
+                    <div class="info">
+                        <strong>Mark Johnson</strong>
+                        <small>File 20</small>
+                    </div>
                 </li>
             </ul>
-            
-            <!-- Add User Button -->
-            <div class="add-user" onclick="addNewUser()">+</div>
+
+        <!-- Sidebar buttons -->
+            <div class="sidebar-buttons">
+                <!-- Add User Button -->
+                <div class="add-user" onclick="addNewUser()"><span class="material-icons">add</span></div>
+
+                <!-- Settings Button -->
+                <div class="settings-button"><span class="material-icons">settings</span></div>
+
+                <!-- Extra Button -->
+                <div class="extra-button"><span class="material-icons">more_horiz</span></div>
+            </div>
+        </div>
+
+        <!-- Sidebar2 -->
+        <div class="sidebar2">
+            <div class="sidebar-header">
+                <button class="btn btn-outline-primary" type="button"  onclick="openSidebar()" style="position: absolute;left: 0%;top: 2%;"><span class="material-icons">menu</span></button>
+            </div>
+
+            <ul class="chat-list" id="chatList">
+                <li class="chat-item" id="john-doe" onclick="loadChat('John Doe', johnDoeMessages)">
+                    <div class="avatar">J</div>
+                </li>
+
+                <li class="chat-item" id="jane-smith" onclick="loadChat('Jane Smith', janeSmithMessages)">
+                <div class="avatar">J</div>           
+                </li>
+                <li class="chat-item" id="mark-johnson" onclick="loadChat('Mark Johnson', markJohnsonMessages)">
+                    <div class="avatar">J</div>
+                </li>
+            </ul>
+
+        <!-- Sidebar buttons -->
+            <div class="sidebar-buttons">
+                <!-- Add User Button -->
+                <div class="add-user" onclick="addNewUser()"><span class="material-icons">add</span></div>
+            </div>
         </div>
 
         <!-- Chat Area -->
@@ -300,223 +522,275 @@
             <!-- File Upload Section -->
             <div class="file-upload-section" id="fileUploadSection">
                 <div class="file-upload-container">
-        <div class="title">File Upload</div>
+                    <div class="title">File Upload</div>
 
-        <div class="file-upload-header">
-            <div>
-            <label style="color: white">Please select a file <br> 
-                <input type="file" id="file" onchange="enableLayerCount()">
-            </div>
-            <div>
-            <label style="color: white">No of Layers <br> 
-                <input type="number" id="layerCount" placeholder="1" oninput="generateAlgorithmFields()" disabled>
-            </div>
-        </div>
+                    <div class="file-upload-header">
+                        <div>
+                            <label style="color: white">Please select a file <br> 
+                            <input class="form-control" type="file" id="file" onchange="enableLayerCount()">
+                        </div>
+                        <div>
+                            <label style="color: white">No of Layers <br> 
+                            <input type="number" id="layerCount" placeholder="1" oninput="generateAlgorithmFields()" disabled>
+                        </div>
+                    </div>
 
-        <div class="file-upload-body">
-            <div class="expiry-controls">
-                <h3 style="color: white">Expiry Controls</h3>
-                <label class="expiry-checkbox">
-                    <input style="color: white" type="checkbox" id="expiryCheckbox" onclick="toggleExpiryOptions()" disabled> Add Expiry
-                </label>
-                <div class="expiry-options" id="expiryOptions">
-                    <label style="color: white">From:</label>
-                    <input type="date" disabled><input type="time" disabled>
-                    <br><br>
-                    <label style="color: white">To:</label>
-                    <input type="date" disabled><input type="time" disabled>
-                    <br><br>
-                    <label style="color: white">Or</label>
-                    <br><br>
-                    <label style="color: white">Number of times file can be opened:</label>
-                    <input type="number" placeholder="1" disabled>
+                    <div class="file-upload-body">
+                        <div class="expiry-controls">
+                            <h3 style="color: white">Expiry Controls</h3>
+                
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="expiryCheckbox" onclick="toggleExpiryOptions()" disabled>
+                                <label class="form-check-label" for="expiryCheckbox">
+                                    Add Expiry
+                                </label>
+                            </div>
+
+                            <div class="expiry-options" id="expiryOptions">
+                                <label style="color: white">From:</label>
+                                <input type="date" disabled><input type="time" disabled>
+                                <br><br>
+                                <label style="color: white">To:</label>
+                                <input type="date" disabled><input type="time" disabled>
+                                <br><br>
+                                <label style="color: white">Or</label>
+                                <br><br>
+                                <label style="color: white">Number of times file can be opened:</label>
+                                <input type="number" placeholder="1" disabled>
+                            </div>
+                        </div>
+
+                        <div class="algorithms-section">
+                            <h3 style="color: white">Algorithms</h3>
+                            <div class="algorithms-list" id="algorithmsList">
+                                <!-- Algorithm selection fields will be generated here -->
+                            </div>
+                            <input class="form-check-input" type="checkbox" value="" id="savePasswords" onclick="">
+                            <label class="form-check-label" for="savePasswords" style="color: white">
+                                Save passwords?
+                            </label>
+                        </div>
+                    </div>
+            
+                    <div class="controls">
+                        <button onclick="closeUploadSection()">Cancel</button>
+                        <button onclick="closeUploadSection()">Upload</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="algorithms-section">
-                <h3 style="color: white">Algorithms</h3>
-                <div class="algorithms-list" id="algorithmsList">
-                    <!-- Algorithm selection fields will be generated here -->
-                </div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <button>Cancel</button>
-            <button>Upload</button>
+        <!-- Chat Footer -->
+        <div class="chat-footer d-flex align-items-center">
+            <button class="btn btn-outline-light me-2" onclick="openUploadSection()"><span class="material-icons">attachment</span></button>
+            <button class="btn btn-outline-light me-2" onclick="openMediaSection()"><span class="material-icons">message</span></button>
+            <input type="text" class="form-control me-2" placeholder="Type a message...">
+            <button class="btn btn-primary"><span class="material-icons">send</span></button>
         </div>
     </div>
-            </div>
 
-            <!-- Chat Footer -->
-            <div class="chat-footer">
-                <input type="text" placeholder="Type a message...">
-                <span class="attachment-btn" onclick="openUploadSection()">Attach</span>
-                <button>Send</button>
+    <!-- Media Pane Section -->
+        <div class="media-pane-section" id="mediaPaneSection">
+            <div class="media-pane-container">
+                <div class="title">Media Pane</div>
+                <div class="media-list" id="mediaItemsContainer">
+                    <!-- Media items -->
+                    <div class="media-item">
+                        <img src="koala.jpg" alt="Koala" class="media-thumbnail">
+                        <div class="media-details">
+                            <strong>Koala</strong>
+                            <p>Description: A cute koala sitting on a tree.</p>
+                            <p>Expires: 20/11/24</p>
+                            <button class="btn btn-danger">Edit</button>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <img src="fox.jpg" alt="Fox" class="media-thumbnail">
+                        <div class="media-details">
+                            <strong>Fox</strong>
+                            <p>Description: A red fox in a snowy landscape.</p>
+                            <p>Expires:</p>
+                            <button class="btn btn-danger">Edit</button>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <img src="aurora.jpg" alt="Aurora" class="media-thumbnail">
+                        <div class="media-details">
+                            <strong>Aurora</strong>
+                            <p>Description: A stunning aurora borealis scene.</p>
+                            <p>Expires: 24/11/24</p>
+                            <button class="btn btn-danger">Edit</button>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <img src="pdf.jpg" alt="pdf" class="media-thumbnail">
+                        <div class="media-details">
+                            <strong>sample pdf</strong>
+                            <p>Description: A pdf of some book.</p>
+                            <p>Expires:</p>
+                            <button class="btn btn-danger">Edit</button>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <img src="ae369a3ea509bba244b73bb2d5233ff1.jpg" alt="carwallpaper" class="media-thumbnail">
+                        <div class="media-details">
+                            <strong>Porche</strong>
+                            <p>Description: height squishing sample.</p>
+                            <p>Expires: 20/12/24</p>
+                            <button class="btn btn-danger">Edit</button>
+                        </div>
+                    </div>
+                </div>          
+            <div class="media-controls">
+                <button onclick="closeMediaSection()">Close</button>
             </div>
         </div>
     </div>
 
     <script>
-	const johnDoeMessages = [
-            { type: 'received', text: 'File 1 - Expires on xx/xx/xx' },
-            { type: 'sent', text: 'File 2' },
-            { type: 'received', text: 'File 3' }
-        ];
+    const johnDoeMessages = [
+        { type: 'received', text: 'File 1 - Expires on xx/xx/xx' },
+        { type: 'sent', text: 'File 2' },
+        { type: 'received', text: 'File 3' }
+    ];
 
-        const janeSmithMessages = [
-            { type: 'received', text: 'File 10 - Expires on xx/xx/xx' },
-            { type: 'sent', text: 'File 11' }
-        ];
+    const janeSmithMessages = [
+        { type: 'received', text: 'File 10 - Expires on xx/xx/xx' },
+        { type: 'sent', text: 'File 11' }
+    ];
 
-        const markJohnsonMessages = [
-            { type: 'received', text: 'File 20 - Expires on xx/xx/xx' },
-            { type: 'sent', text: 'File 21' },
-            { type: 'received', text: 'File 22' }
-        ];
-        function openUploadSection() {
-            document.querySelector('.chat-messages').style.display = 'none';
-            document.getElementById('fileUploadSection').classList.add('active');
-        }
-	function loadChat(userName, messages) {
-            // Update chat header
-            document.getElementById('chatHeader').textContent = userName;
+    const markJohnsonMessages = [
+        { type: 'received', text: 'File 20 - Expires on xx/xx/xx' },
+        { type: 'sent', text: 'File 21' },
+        { type: 'received', text: 'File 22' }
+    ];
 
-            // Enable the chat footer
-            document.querySelector('.chat-footer input').disabled = false;
-            document.querySelector('.chat-footer button').disabled = false;
+    function loadChat(userName, messages) {
+        document.getElementById('chatHeader').textContent = userName;
+        document.querySelector('.chat-footer input').disabled = false;
+        document.querySelector('.chat-footer button').disabled = false;
 
-            // Clear existing messages
-            const chatMessagesElement = document.getElementById('chatMessages');
-            chatMessagesElement.innerHTML = '';
+        const chatMessagesElement = document.getElementById('chatMessages');
+        chatMessagesElement.innerHTML = '';
 
-            // Load new messages
-            messages.forEach(message => {
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('message');
-                if (message.type === 'sent') {
-                    messageDiv.classList.add('sent');
-                }
-                const messageText = document.createElement('p');
-                messageText.textContent = message.text;
-                messageDiv.appendChild(messageText);
-                chatMessagesElement.appendChild(messageDiv);
-            });
-        }
-
-        function closeUploadSection() {
-            document.querySelector('.chat-messages').style.display = 'block';
-            document.getElementById('fileUploadSection').classList.remove('active');
-        }
-
-        // Expiry Popup
-        document.getElementById('expiry-checkbox').addEventListener('change', function() {
-            if (this.checked) {
-                document.getElementById('expiryPopup').style.display = 'flex';
+        messages.forEach(message => {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            if (message.type === 'sent') {
+                messageDiv.classList.add('sent');
             }
+            const messageText = document.createElement('p');
+            messageText.textContent = message.text;
+            messageDiv.appendChild(messageText);
+            chatMessagesElement.appendChild(messageDiv);
         });
+    }
 
-        function closeExpiryPopup() {
-            document.getElementById('expiryPopup').style.display = 'none';
+    function openSidebar() {
+        document.querySelector('.sidebar').style.display = 'block';
+        document.querySelector('.sidebar2').style.display = 'none';
+        document.querySelector('.chat-area').style.width = '80%';
+    }
+
+    function closeSidebar() {
+        document.querySelector('.sidebar').style.display = 'none';
+        document.querySelector('.sidebar2').style.display = 'block';
+        document.querySelector('.chat-area').style.width = '90%';
+    }
+
+    function openUploadSection() {
+        closeMediaSection()
+        document.querySelector('.chat-messages').style.display = 'none';
+        document.getElementById('fileUploadSection').classList.add('active');
+    }
+
+    function closeUploadSection() {
+        document.querySelector('.chat-messages').style.display = 'block';
+        document.getElementById('fileUploadSection').classList.remove('active');
+    }
+
+    function openMediaSection() {
+        closeUploadSection()
+        //document.querySelector('.chat-messages').style.width = "";
+        document.getElementById('mediaPaneSection').classList.add('active');
+    }
+
+    function closeMediaSection() {
+        document.querySelector('.chat-messages').style.display = 'block';
+        document.getElementById('mediaPaneSection').classList.remove('active');
+    }
+
+    function addNewUser() {
+        const userName = prompt("Enter the name of the new user:");
+        if (userName) {
+            const newUserItem = document.createElement('li');
+            newUserItem.classList.add('chat-item');
+            newUserItem.id = userName.replace(/\s+/g, '-').toLowerCase(); // Creating a unique ID for each user
+            newUserItem.innerHTML = `<div class="avatar">${userName.charAt(0).toUpperCase()}</div>
+                <div class="info">
+                    <strong>${userName}</strong>
+                    <small>No files yet</small>
+                </div>`;
+            newUserItem.onclick = function() {
+                loadChat(userName, []); // Initialize with an empty messages array or load from the backend
+            };
+            document.getElementById('chatList').appendChild(newUserItem);
         }
+    }
 
-        // Encryption Popup
-        document.getElementById('openEncryptionPopup').addEventListener('click', function() {
-            document.getElementById('encryptionPopup').style.display = 'flex';
-        });
+    function enableLayerCount() {
+        document.getElementById('layerCount').disabled = false;
+    }
 
-        function closeEncryptionPopup() {
-            document.getElementById('encryptionPopup').style.display = 'none';
+    function generateAlgorithmFields() {
+        const algorithmsList = document.getElementById('algorithmsList');
+        const layerCount = parseInt(document.getElementById('layerCount').value) || 1;
+
+        document.getElementById('expiryCheckbox').disabled = false;
+        algorithmsList.innerHTML = '';
+
+        for (let i = 1; i <= layerCount; i++) {
+            const algorithmItem = document.createElement('div');
+            algorithmItem.className = 'algorithm-item';
+            algorithmItem.innerHTML = `
+                <label>${i})</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option>AES</option>
+                    <option>DES</option>
+                    <option>RSA</option>
+                    <option>SHA-256</option>
+                    <option>Blowfish</option>
+                    <option>Twofish</option>
+                    <option>MD5</option>
+                </select>
+                <input type="password" class="algorithm-password" placeholder="Password">
+            `;
+            algorithmsList.appendChild(algorithmItem);
         }
+    }
 
-        // Drag and Drop for encryption algorithms
-        const encryptionItems = document.querySelectorAll('.encryption-item');
-        const dropArea = document.querySelector('.drop-area');
+function toggleExpiryOptions() {
+    const isEnabled = document.getElementById('expiryCheckbox').checked;
+    const expiryInputs = document.querySelectorAll('#expiryOptions input');
 
-        encryptionItems.forEach(item => {
-            item.addEventListener('dragstart', function(e) {
-                e.dataTransfer.setData('text', e.target.textContent);
-            });
-        });
+    // Enable or disable each input field based on the checkbox state
+    expiryInputs.forEach(input => {
+        input.disabled = !isEnabled;
+    });
+    
+    // Optionally, you can change the visibility of the "expiry-options" section
+    // If you want to hide/show the section, you can toggle its display here.
+    //document.getElementById('expiryOptions').style.display = isEnabled ? 'block' : 'none';
+}
 
-        dropArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-        });
+    document.getElementById('layerCount').disabled = true;
+    document.getElementById('expiryCheckbox').disabled = true;
+    document.querySelectorAll('#expiryOptions input').forEach(input => input.disabled = true);
 
-        dropArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            const data = e.dataTransfer.getData('text');
-            const newAlgo = document.createElement('div');
-            newAlgo.textContent = data;
-            newAlgo.classList.add('encryption-item');
-            dropArea.appendChild(newAlgo);
-        });
+    // Call generateAlgorithmFields on page load to ensure 1 default algorithm field
+    document.addEventListener('DOMContentLoaded', function() {
+        generateAlgorithmFields();
+    });
+</script>
 
-        // Add New User Functionality
-        function addNewUser() {
-            const userName = prompt("Enter the name of the new user:");
-            if (userName) {
-                const newUserItem = document.createElement('li');
-                newUserItem.classList.add('chat-item');
-                newUserItem.innerHTML = `<strong>${userName}</strong><small>No files yet</small>`;
-                document.getElementById('chatList').appendChild(newUserItem);
-            }
-        }
-        // Step 1: Enable the layer count input when a file is selected
-        function enableLayerCount() {
-            document.getElementById('layerCount').disabled = false;
-        }
-
-        // Step 2: Enable algorithms selection fields based on layer count input
-        function generateAlgorithmFields() {
-            const algorithmsList = document.getElementById('algorithmsList');
-            const layerCount = parseInt(document.getElementById('layerCount').value) || 1;
-            
-            // Enable expiry checkbox after setting layers
-            document.getElementById('expiryCheckbox').disabled = false;
-
-            // Clear existing fields
-            algorithmsList.innerHTML = '';
-
-            // Create fields based on layer count
-            for (let i = 1; i <= layerCount; i++) {
-                const algorithmItem = document.createElement('div');
-                algorithmItem.className = 'algorithm-item';
-                algorithmItem.innerHTML = `
-                    <label>${i})</label>
-                    <select>
-                        <option>Select Algorithm</option>
-                        <option>AES</option>
-                        <option>DES</option>
-                        <option>RSA</option>
-                        <option>SHA-256</option>
-                        <option>Blowfish</option>
-                        <option>Twofish</option>
-                        <option>MD5</option>
-                    </select>
-                    <input type="password" class="algorithm-password" placeholder="Password">
-                `;
-                algorithmsList.appendChild(algorithmItem);
-            }
-        }
-
-        // Toggle expiry options visibility based on checkbox state
-        function toggleExpiryOptions() {
-            const expiryOptions = document.getElementById('expiryOptions');
-            const isEnabled = document.getElementById('expiryCheckbox').checked;
-
-            // Enable or disable date and time fields based on checkbox state
-            expiryOptions.querySelectorAll('input').forEach(input => {
-                input.disabled = !isEnabled;
-            });
-
-            expiryOptions.style.display = isEnabled ? 'block' : 'none';
-        }
-
-        // Initialize with fields and controls disabled
-        document.getElementById('layerCount').disabled = true;
-        document.getElementById('expiryCheckbox').disabled = true;
-        document.querySelectorAll('#expiryOptions input').forEach(input => input.disabled = true);
-    </script>
 </body>
 </html>
