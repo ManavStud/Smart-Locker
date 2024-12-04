@@ -28,7 +28,7 @@
     
     .sidebar {
     width: 20%;
-    background-color: #1E1E1E;
+    background-color: #011930;
     border-right: 1px solid #ddd;
     display: flex;
     flex-direction: column;
@@ -37,7 +37,7 @@
     }
     .sidebar2 {
     width: 10%;
-    background-color: #1E1E1E;
+    background-color: #011930;
     border-right: 1px solid #ddd;
     display: none;
     flex-direction: column;
@@ -74,7 +74,7 @@
     
     .sidebar-header {
         padding: 20px;
-        background-color: #1E1E1E;
+        background-color: #011930;
         color: white;
         font-weight: bold;
         text-align: center;
@@ -152,7 +152,7 @@
     
     .chat-header {
         padding: 20px;
-        background-color: #1E1E1E;
+        background-color: #011930;
         color: white;
         font-weight: bold;
         display: flex;
@@ -162,7 +162,7 @@
     .chat-messages {
         flex: 1;
         padding: 20px;
-        background-color: #ece5dd;
+        background-color: #D4F6FF;
         overflow-y: auto;
     }
     
@@ -178,17 +178,17 @@
         display: inline-block;
         padding: 10px 15px;
         border-radius: 10px;
-        background-color: #fff;
+        background-color: #707070;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     }
     
     .message.sent p {
-        background-color: #dcf8c6;
+        background-color: #0078fe;
     }
     
     .chat-footer {
         padding: 20px;
-        background-color: #1E1E1E;
+        background-color: #011930;
         color: white;
         display: flex;
         align-items: center;
@@ -229,7 +229,7 @@
     .file-upload-section {
         flex: 1;
         padding: 0px;
-        background-color: #1E1E1E;
+        background-color: #011930;
         display: none;
     }
     
@@ -342,7 +342,7 @@
 /* Media Pane Section */
 .media-pane-section {
     width: 40%;
-    background-color: #1E1E1E;
+    background-color: #011930;
     display: none; /* Hidden initially */
     padding: 20px;
     color: white;
@@ -424,6 +424,200 @@
 .media-controls button:hover {
     background-color: #0056b3;
 }
+
+.popup {
+            display: none;
+            position: fixed;
+            top: 35%;
+            right: 0%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            background-image: linear-gradient(#F4A07B, #305ED4);
+            color:white;
+        }
+
+        .photo-container {
+            position: relative;
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .popup img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .edit-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-container:hover .edit-icon {
+            opacity: 1;
+        }
+
+        .popup h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .popup p {
+            margin: 5px 0;
+            color: white;
+            opacity: 0.62;
+        }
+
+        .popup .close-btn {
+            margin-top: 15px;
+            padding: 8px 16px;
+            font-size: 14px;
+            color: white;
+            background-color: #ff4444;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup .close-btn:hover {
+            background-color: #cc0000;
+        }
+
+.chat-list {
+  position: relative;
+  height:calc(100% - 170px);
+  overflow-y: auto;
+  background-color:#02315e ;
+  border-radius: 10px;
+}
+
+.chat-list .chat-box {
+  position: relative;
+  width: 100%;
+  display:flex;
+
+/*   justify-content: center; */
+  align-items:center;
+  cursor: pointer;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-list .chat-box .img-box {
+  position:relative;
+  width: 55px;
+  height:45px;
+  overflow:hidden;
+  border-radius: 50%;
+}
+
+.chat-list .chat-box .chat-details {
+  width: 100%;
+  margin-left: 10px;
+}
+
+.chat-list .chat-box .chat-details .text-head {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom:2px;
+}
+
+.chat-list .chat-box .chat-details .text-head h4 {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #000;
+}
+
+.chat-list .chat-box .chat-details .text-head .time {
+  font-size: 0.8em;
+  color: #aaa;
+}
+
+.chat-list .chat-box .chat-details .text-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-list .chat-box .chat-details .text-message p {
+  color: #aaa;
+  font-size: 0.9em;
+  overlay: hidden;
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.chat-list .chat-box .chat-details .text-message b {
+  background: #fe019a;
+  color: #000;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+/*   text-align: center; */
+  font-size: 0.8em;
+  font-weight: 400;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.chat-list .active {
+  background: #011930;
+}
+.chat-list .active h4 {
+  color: white; /* Change h4 text color */
+}
+.chat-list .chat-box:hover {
+  background: #011930;
+}
+
+.chat-list .chat-box .chat-details .text-head .unread {
+  color: #06e744;
+}
+.main-container {
+  position: relative;
+  width: 1000px;
+  max-width: 100%;
+  height: calc(100vh - 40px);
+  background: #fff;
+  display: flex;
+  box-shadow: 0px 1px 1px  0 rgba(0,0,0,0.5), 0px 2px 5px 0 rgba(0,0,0,0.6);
+}
+
+.main-container .left-container {
+  position:relative;
+  width: 30%;
+  height:100%;
+  flex: 30%;
+  background: #fff;
+}
+
     </style>
 </head>
 
@@ -435,7 +629,6 @@
                 <button class="btn btn-outline-primary" type="button"  onclick="closeSidebar()" style="position: absolute;left: 0%;top: 2%;"><span class="material-icons">menu</span></button>
                 Smart Locker
             </div>
-
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
@@ -443,6 +636,134 @@
                 </div>
             </div>
 
+            
+            <div class="chat-list">
+
+                <div class="chat-box" id="Nowfal-chat" onclick="loadChat('Nowfal', nofalMessages)">
+                  <div class="img-box">
+                    <img class="img-cover" src="https://lh5.googleusercontent.com/-7ssjf_mDE1Q/AAAAAAAAAAI/AAAAAAAAASo/tioYx2oklWEHoo5nAEyCT-KeLxYqE5PuQCLcDEAE/s100-c-k-no-mo/photo.jpg" alt="">
+                  </div>
+                  <div class="chat-details">
+                    <div class="text-head">
+                      <h4>Nowfal</h4>
+                      <p class="time unread">11:49</p>
+                    </div>
+                    <div class="text-message">
+                      <p>“How are you?”</p>
+                      <b>1</b>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-box" id="Rowfal-chat" onclick="loadChat('Rohan', rohanMessages)">
+                  <div class="img-box">
+                    <img class="img-cover" src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+                  </div>
+                  <div class="chat-details">
+                    <div class="text-head">
+                      <h4>Rohan</h4>
+                      <p class="time unread">10:49</p>
+                    </div>
+                    <div class="text-message">
+                      <p>“I’ll be there.”</p>
+                      <b>4</b>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-box" id="Zoya-chat" onclick="loadChat('Zoya', zoyaMessages)">
+                  <div class="img-box">
+                    <img class="img-cover" src="https://images.pexels.com/photos/8367221/pexels-photo-8367221.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+                  </div>
+                  <div class="chat-details">
+                    <div class="text-head">
+                      <h4>Zoya</h4>
+                      <p class="time unread">09:49</p>
+                    </div>
+                    <div class="text-message">
+                      <p>“Make some...”</p>
+                      <b>2</b>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-box">
+                  <div class="img-box">
+                    <img class="img-cover" src="https://images.pexels.com/photos/1382731/pexels-photo-1382731.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+                  </div>
+                  <div class="chat-details">
+                    <div class="text-head">
+                      <h4>Ava</h4>
+                      <p class="time">08:49</p>
+                    </div>
+                    <div class="text-message">
+                      <p>“Dreams come true.”</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-box">
+                  <div class="img-box">
+                    <img class="img-cover" src="https://images.pexels.com/photos/2474307/pexels-photo-2474307.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+                  </div>
+                  <div class="chat-details">
+                    <div class="text-head">
+                      <h4>Leo</h4>
+                      <p class="time">07:49</p>
+                    </div>
+                    <div class="text-message">
+                      <p>Awesome! I'll start a vid..</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-box">
+                  <div class="img-box">
+                    <img class="img-cover" src="https://images.pexels.com/photos/3564412/pexels-photo-3564412.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+                  </div>
+                  <div class="chat-details">
+                    <div class="text-head">
+                      <h4>Azariah</h4>
+                      <p class="time">06:49</p>
+                    </div>
+                    <div class="text-message">
+                      <p>“Love, light, laughter.”</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-box">
+                  <div class="img-box">
+                    <img class="img-cover" src="https://images.pexels.com/photos/2919367/pexels-photo-2919367.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+                  </div>
+                  <div class="chat-details">
+                    <div class="text-head">
+                      <h4>Oliver</h4>
+                      <p class="time unread">Yesterday</p>
+                    </div>
+                    <div class="text-message">
+                      <p>“Appreciate the mome..”</p>
+                      <b>2</b>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-box">
+                  <div class="img-box">
+                    <img class="img-cover" src="https://images.pexels.com/photos/14526673/pexels-photo-14526673.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+                  </div>
+                  <div class="chat-details">
+                    <div class="text-head">
+                      <h4>Jeslin</h4>
+                      <p class="time">Yesterday</p>
+                    </div>
+                    <div class="text-message">
+                      <p>“Now or never.”</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+<!--
             <ul class="chat-list" id="chatList">
                 <li class="chat-item" id="john-doe" onclick="loadChat('John Doe', johnDoeMessages)">
                     <div class="avatar">J</div>
@@ -466,7 +787,7 @@
                         <small>File 20</small>
                     </div>
                 </li>
-            </ul>
+            </ul>  -->
 
         <!-- Sidebar buttons -->
             <div class="sidebar-buttons">
@@ -477,7 +798,7 @@
                 <div class="settings-button"><span class="material-icons">settings</span></div>
 
                 <!-- Extra Button -->
-                <div class="extra-button"><span class="material-icons">more_horiz</span></div>
+                <div class="extra-button" onclick="showPopup()"><span class="material-icons">person</span></div>
             </div>
         </div>
 
@@ -646,6 +967,18 @@
         </div>
     </div>
 
+<div class="popup" id="popup">
+        <div class="photo-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png" alt="User Photo">
+            <div class="edit-icon">🖉</div>
+        </div>
+        <h2>John Locke</h2>
+        <p>c8acs09ckl <a href="url" style="color: white;font-size: 14px ;">Copy</a></p>
+        <p>Memeber Since:</p>
+        <p>September, 2024</p>
+        <button class="btn btn-danger">Profile</button>
+    </div>
+
     <script>
     const johnDoeMessages = [
         { type: 'received', text: 'File 1 - Expires on xx/xx/xx' },
@@ -659,6 +992,21 @@
     ];
 
     const markJohnsonMessages = [
+        { type: 'received', text: 'File 20 - Expires on xx/xx/xx' },
+        { type: 'sent', text: 'File 21' },
+        { type: 'received', text: 'File 22' }
+    ];
+
+    const nofalMessages = [
+    { type: 'received', text: 'File 1 - Expires on xx/xx/xx' },
+        { type: 'sent', text: 'File 2' },
+        { type: 'received', text: 'File 3' }
+    ];
+    const rohanMessages = [
+        { type: 'received', text: 'File 10 - Expires on xx/xx/xx' },
+        { type: 'sent', text: 'File 11' }
+    ];
+    const zoyaMessages = [
         { type: 'received', text: 'File 20 - Expires on xx/xx/xx' },
         { type: 'sent', text: 'File 21' },
         { type: 'received', text: 'File 22' }
@@ -790,6 +1138,34 @@ function toggleExpiryOptions() {
     document.addEventListener('DOMContentLoaded', function() {
         generateAlgorithmFields();
     });
+
+function showPopup() {
+    const popup = document.getElementById('popup');
+    if (popup.style.display === 'none' || popup.style.display === '') {
+        popup.style.display = 'block';
+    } else if (popup.style.display === 'block') {
+        popup.style.display = 'none';
+    }
+}
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Select all chat boxes
+  const chatBoxes = document.querySelectorAll('.chat-box');
+
+  chatBoxes.forEach(chatBox => {
+    chatBox.addEventListener('click', () => {
+      // Remove 'active' class from all chat boxes
+      chatBoxes.forEach(box => box.classList.remove('active'));
+
+      // Add 'active' class to the clicked chat box
+      chatBox.classList.add('active');
+    });
+  });
+});
+
 </script>
 
 </body>
