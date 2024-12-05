@@ -179,11 +179,13 @@
         padding: 10px 15px;
         border-radius: 10px;
         background-color: #707070;
+        color: white;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     }
     
     .message.sent p {
         background-color: #0078fe;
+        color: white;
     }
     
     .chat-footer {
@@ -339,284 +341,305 @@
         margin: 5px;
     }
     
-/* Media Pane Section */
-.media-pane-section {
-    width: 40%;
-    background-color: #011930;
-    display: none; /* Hidden initially */
-    padding: 20px;
-    color: white;
-}
+    /* Media Pane Section */
+    .media-pane-section {
+        width: 40%;
+        background-color: #011930;
+        display: none; /* Hidden initially */
+        padding: 20px;
+        color: white;
+    }
 
-.media-pane-section.active {
-    display: block;
-}
+    .media-pane-section.active {
+        display: block;
+    }
 
-.media-pane-container {
-    width: 100%;
-    height: 100%;
-    max-width: 1200px;
-    margin: auto;
-    border-radius: 15px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-}
+    .media-pane-container {
+        width: 100%;
+        height: 100%;
+        max-width: 1200px;
+        margin: auto;
+        border-radius: 15px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
 
-.media-list {
-    padding: 10px;
-    overflow-y: auto;
-    max-height: 80%;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Space between media items */
-}
+    .media-list {
+        padding: 10px;
+        overflow-y: auto;
+        max-height: 80%;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 20px; /* Space between media items */
+    }
 
-.media-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px; /* Space between thumbnail and details */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #282828;
-}
+    .media-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px; /* Space between thumbnail and details */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #282828;
+    }
 
-.media-thumbnail {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 10%;
-    border: 1px solid #444;
-}
+    .media-thumbnail {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10%;
+        border: 1px solid #444;
+    }
 
-.media-details {
-    flex: 1;
-}
+    .media-details {
+        flex: 1;
+    }
 
-.media-details strong {
-    font-size: 16px;
-    margin-bottom: 5px;
-    display: block;
-}
+    .media-details strong {
+        font-size: 16px;
+        margin-bottom: 5px;
+        display: block;
+    }
 
-.media-details p {
-    font-size: 14px;
-    margin: 5px 0;
-}
+    .media-details p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
 
-.media-controls {
-    margin-top: 20px;
-    text-align: center;
-}
+    .media-controls {
+        margin-top: 20px;
+        text-align: center;
+    }
 
-.media-controls button {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    transition: background-color 0.3s ease;
-}
+    .media-controls button {
+        padding: 10px 20px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        transition: background-color 0.3s ease;
+    }
 
-.media-controls button:hover {
-    background-color: #0056b3;
-}
+    .media-controls button:hover {
+        background-color: #0056b3;
+    }
 
-.popup {
-            display: none;
-            position: fixed;
-            top: 35%;
-            right: 0%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 20px;
-            background-image: linear-gradient(#F4A07B, #305ED4);
-            color:white;
-        }
+    .popup {
+        display: none;
+        position: fixed;
+        top: 35%;
+        right: 0%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 20px;
+        background-image: linear-gradient(#F4A07B, #305ED4);
+        color:white;
+    }
 
-        .photo-container {
-            position: relative;
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            margin-bottom: 15px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
+    .photo-container {
+        position: relative;
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
 
-        .popup img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .popup img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-        .edit-icon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-        }
+    .edit-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+    }
 
-        .photo-container:hover .edit-icon {
-            opacity: 1;
-        }
+    .photo-container:hover .edit-icon {
+        opacity: 1;
+    }
 
-        .popup h2 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: bold;
-        }
+    .popup h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
 
-        .popup p {
-            margin: 5px 0;
-            color: white;
-            opacity: 0.62;
-        }
+    .popup p {
+        margin: 5px 0;
+        color: white;
+        opacity: 0.62;
+    }
 
-        .popup .close-btn {
-            margin-top: 15px;
-            padding: 8px 16px;
-            font-size: 14px;
-            color: white;
-            background-color: #ff4444;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .popup .close-btn {
+        margin-top: 15px;
+        padding: 8px 16px;
+        font-size: 14px;
+        color: white;
+        background-color: #ff4444;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-        .popup .close-btn:hover {
-            background-color: #cc0000;
-        }
+    .popup .close-btn:hover {
+        background-color: #cc0000;
+    }
 
-.chat-list {
-  position: relative;
-  height:calc(100% - 170px);
-  overflow-y: auto;
-  background-color:#02315e ;
-  border-radius: 10px;
-}
+    .chat-list {
+        position: relative;
+        height:calc(100% - 170px);
+        overflow-y: auto;
+        background-color:#02315e ;
+        border-radius: 10px;
 
-.chat-list .chat-box {
-  position: relative;
-  width: 100%;
-  display:flex;
+        /*custom scrollbar*/
+        scrollbar-color: #0382f8 #02315e;
+        scrollbar-width: thin;
+    }
+    .chat-list::-webkit-scrollbar {
+        width: 20px;
+    }
 
-/*   justify-content: center; */
-  align-items:center;
-  cursor: pointer;
-  padding: 15px;
-  border-bottom: 1px solid #eee;
-}
+    .chat-list::-webkit-scrollbar-track {
+        background-color: #e4e4e4;
+        border-radius: 100px;
+    }
 
-.chat-list .chat-box .img-box {
-  position:relative;
-  width: 55px;
-  height:45px;
-  overflow:hidden;
-  border-radius: 50%;
-}
+    .chat-list::-webkit-scrollbar-thumb {
+        border-radius: 100px;
+        background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
+        box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+    }
 
-.chat-list .chat-box .chat-details {
-  width: 100%;
-  margin-left: 10px;
-}
+    .chat-list .chat-box {
+        position: relative;
+        width: 100%;
+        display:flex;
 
-.chat-list .chat-box .chat-details .text-head {
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom:2px;
-}
+        /*   justify-content: center; */
+        align-items:center;
+        cursor: pointer;
+        padding: 5px;
+        border-bottom: 1px solid #eee;
+    }
 
-.chat-list .chat-box .chat-details .text-head h4 {
-  font-size: 1.1em;
-  font-weight: 600;
-  color: #000;
-}
+    .chat-list .chat-box .img-box {
+        position:relative;
+        width: 55px;
+        height:55px;
+        overflow:hidden;
+        border-radius: 50%;
+    }
 
-.chat-list .chat-box .chat-details .text-head .time {
-  font-size: 0.8em;
-  color: #aaa;
-}
+    .chat-list .chat-box .chat-details {
+        width: 100%;
+        margin-left: 10px;
+    }
 
-.chat-list .chat-box .chat-details .text-message {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .chat-list .chat-box .chat-details .text-head {
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom:2px;
+    }
 
-.chat-list .chat-box .chat-details .text-message p {
-  color: #aaa;
-  font-size: 0.9em;
-  overlay: hidden;
-}
+    .chat-list .chat-box .chat-details .text-head h4 {
+        font-size: 1.1em;
+        font-weight: 600;
+        color: #000;
+    }
 
-img {
-  width: 100%;
-  object-fit: cover;
-}
+    .chat-list .chat-box .chat-details .text-head .time {
+        font-size: 0.8em;
+        color: #aaa;
+    }
 
-.chat-list .chat-box .chat-details .text-message b {
-  background: #fe019a;
-  color: #000;
-  min-width: 20px;
-  height: 20px;
-  border-radius: 50%;
-/*   text-align: center; */
-  font-size: 0.8em;
-  font-weight: 400;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+    .chat-list .chat-box .chat-details .text-message {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.chat-list .active {
-  background: #011930;
-}
-.chat-list .active h4 {
-  color: white; /* Change h4 text color */
-}
-.chat-list .chat-box:hover {
-  background: #011930;
-}
+    .chat-list .chat-box .chat-details .text-message p {
+        color: #aaa;
+        font-size: 0.9em;
+        overlay: hidden;
+    }
 
-.chat-list .chat-box .chat-details .text-head .unread {
-  color: #06e744;
-}
-.main-container {
-  position: relative;
-  width: 1000px;
-  max-width: 100%;
-  height: calc(100vh - 40px);
-  background: #fff;
-  display: flex;
-  box-shadow: 0px 1px 1px  0 rgba(0,0,0,0.5), 0px 2px 5px 0 rgba(0,0,0,0.6);
-}
+    img {
+        width: 100%;
+        object-fit: cover;
+    }
 
-.main-container .left-container {
-  position:relative;
-  width: 30%;
-  height:100%;
-  flex: 30%;
-  background: #fff;
-}
+    .chat-list .chat-box .chat-details .text-message b {
+        background: #fe019a;
+        color: #000;
+        min-width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        /*   text-align: center; */
+        font-size: 0.8em;
+        font-weight: 400;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .chat-list .active {
+        background: #011930;
+    }
+    
+        .chat-list .active h4 {
+        color: white; /* Change h4 text color */
+    }
+    
+    .chat-list .chat-box:hover {
+        background: #011930;
+    }
+
+    .chat-list .chat-box .chat-details .text-head .unread {
+        color: #06e744;
+    }
+
+    .main-container {
+        position: relative;
+        width: 1000px;
+        max-width: 100%;
+        height: calc(100vh - 40px);
+        background: #fff;
+        display: flex;
+        box-shadow: 0px 1px 1px  0 rgba(0,0,0,0.5), 0px 2px 5px 0 rgba(0,0,0,0.6);
+    }
+
+    .main-container .left-container {
+        position:relative;
+        width: 30%;
+        height:100%;
+        flex: 30%;
+        background: #fff;
+    }
 
     </style>
 </head>
@@ -763,31 +786,6 @@ img {
                   </div>
                 </div>
               </div>
-<!--
-            <ul class="chat-list" id="chatList">
-                <li class="chat-item" id="john-doe" onclick="loadChat('John Doe', johnDoeMessages)">
-                    <div class="avatar">J</div>
-                    <div class="info">
-                        <strong>John Doe</strong>
-                        <small>File 1</small>
-                    </div>
-                </li>
-
-                <li class="chat-item" id="jane-smith" onclick="loadChat('Jane Smith', janeSmithMessages)">
-                <div class="avatar">J</div>
-                    <div class="info">
-                        <strong>Jane Smith</strong>
-                        <small>File 10</small>
-                    </div>            
-                </li>
-                <li class="chat-item" id="mark-johnson" onclick="loadChat('Mark Johnson', markJohnsonMessages)">
-                    <div class="avatar">J</div>
-                    <div class="info">
-                        <strong>Mark Johnson</strong>
-                        <small>File 20</small>
-                    </div>
-                </li>
-            </ul>  -->
 
         <!-- Sidebar buttons -->
             <div class="sidebar-buttons">
@@ -916,48 +914,48 @@ img {
                 <div class="media-list" id="mediaItemsContainer">
                     <!-- Media items -->
                     <div class="media-item">
-                        <img src="koala.jpg" alt="Koala" class="media-thumbnail">
+                        <img src="https://t3.ftcdn.net/jpg/08/00/98/52/360_F_800985275_gSBMgvr5Hwrpyi8VBFyXz6W5XjA3iDOr.jpg" alt="Koala" class="media-thumbnail">
                         <div class="media-details">
                             <strong>Koala</strong>
-                            <p>Description: A cute koala sitting on a tree.</p>
+                            <p>Description: A koala sitting on a tree.</p>
                             <p>Expires: 20/11/24</p>
-                            <button class="btn btn-danger">Edit</button>
+                            <button class="btn btn-danger">Edit</button>  <button id="view" class="btn btn-success">view</button>
                         </div>
                     </div>
                     <div class="media-item">
-                        <img src="fox.jpg" alt="Fox" class="media-thumbnail">
+                        <img src="https://static1.squarespace.com/static/569ec99b841abaccb7c7e74c/56ce9522b09f953e4e7b3dd7/64af131baa980a3163c7f839/1692111972669/Red+Fox_Ray+Hennessy_2017-11-20.jpg?format=1500w" alt="Fox" class="media-thumbnail">
                         <div class="media-details">
                             <strong>Fox</strong>
                             <p>Description: A red fox in a snowy landscape.</p>
                             <p>Expires:</p>
-                            <button class="btn btn-danger">Edit</button>
+                            <button class="btn btn-danger">Edit</button>  <button id="view" class="btn btn-success">view</button>
                         </div>
                     </div>
                     <div class="media-item">
-                        <img src="aurora.jpg" alt="Aurora" class="media-thumbnail">
+                        <img src="https://cdn.mos.cms.futurecdn.net/6RUWb9NLBGA8v4oQtDgbAL.jpg" alt="Aurora" class="media-thumbnail">
                         <div class="media-details">
                             <strong>Aurora</strong>
                             <p>Description: A stunning aurora borealis scene.</p>
                             <p>Expires: 24/11/24</p>
-                            <button class="btn btn-danger">Edit</button>
+                            <button class="btn btn-danger">Edit</button>  <button id="view" class="btn btn-success">view</button>
                         </div>
                     </div>
                     <div class="media-item">
-                        <img src="pdf.jpg" alt="pdf" class="media-thumbnail">
+                        <img src="https://www.yumpu.com/en/image/facebook/24823037.jpg" alt="pdf" class="media-thumbnail">
                         <div class="media-details">
                             <strong>sample pdf</strong>
                             <p>Description: A pdf of some book.</p>
                             <p>Expires:</p>
-                            <button class="btn btn-danger">Edit</button>
+                            <button class="btn btn-danger">Edit</button>  <button id="view" class="btn btn-success">view</button>
                         </div>
                     </div>
                     <div class="media-item">
-                        <img src="ae369a3ea509bba244b73bb2d5233ff1.jpg" alt="carwallpaper" class="media-thumbnail">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1D_o85jXwTBbmpYyK1tG38uqrN-2-AbJEKQ&s" alt="carwallpaper" class="media-thumbnail">
                         <div class="media-details">
                             <strong>Porche</strong>
                             <p>Description: height squishing sample.</p>
                             <p>Expires: 20/12/24</p>
-                            <button class="btn btn-danger">Edit</button>
+                            <button class="btn btn-danger">Edit</button>  <button id="view" class="btn btn-success">view</button>
                         </div>
                     </div>
                 </div>          
