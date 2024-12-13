@@ -29,7 +29,7 @@ def extract_salt(passphrases):
     return [passphrase[1::2] if len(passphrase) % 2 == 0 else passphrase[0::2] for passphrase in passphrases]
 
 # Helper function: Add a watermark to the PDF
-def add_watermark_to_pdf(pdf_data, watermark_text, color_hex, opacity, font, size, angle=45):
+def add_watermark_to_pdf(pdf_data, watermark_text, color_hex, opacity, font, size, angle):
     packet = BytesIO()
     can = canvas.Canvas(packet, pagesize=letter)
     color = colors.HexColor(color_hex)
@@ -69,7 +69,6 @@ def add_watermark_to_pdf(pdf_data, watermark_text, color_hex, opacity, font, siz
 
 # Encrypt PDF data
 def encrypt_pdf(pdf_data, algorithms, all_passphrases, all_salts):
-    pdf_data = add_watermark_to_pdf(pdf_data, "Confidential", "#FF0000", 50, "Times-Roman", 40)
     nonces = []
     hash_data = create_sha256_hash(pdf_data)
 
@@ -143,10 +142,11 @@ def decrypt():
         try:
             with zipfile.ZipFile(BytesIO(zip_file.read()), 'r') as zip_ref:
                 # Extract required files from ZIP archive
-                encrypted_data = zip_ref.read('encrypted.enc')
-                nonces_data = json.loads(zip_ref.read('encrypted.nonces.json').decode('utf-8'))
-                hash_data = zip_ref.read('encrypted.hash').decode('utf-8').strip('"').strip()
+                encrypted_data = zip_ref.read('encrypted.enc')  # Encrypted data
+                nonces_data = json.loads(zip_ref.read('encrypted.nonces.json').decode('utf-8'))  # Nonces for decryption
+                hash_data = zip_ref.read('encrypted.hash').decode('utf-8').strip('"').strip()  # Hash for file integrity
         except (KeyError, zipfile.BadZipFile, json.JSONDecodeError):
+            # Return an error if the ZIP file is invalid or required files are missing
             return jsonify({"error": "Invalid ZIP file or missing required files"}), 400
 
     # Option 2: Check if individual files were uploaded
@@ -154,41 +154,98 @@ def decrypt():
         # Read individual uploaded files
         encrypted_data = request.files['encrypted.enc'].read()
         try:
-            nonces_data = json.loads(request.files['encrypted.nonces.json'].read().decode('utf-8'))
+            nonces_data = json.loads(request.files['encrypted.nonces.json'].read().decode('utf-8'))  # Nonces for decryption
         except json.JSONDecodeError:
+            # Return an error if the nonces file contains invalid JSON
             return jsonify({"error": "Invalid JSON format in nonces file"}), 400
         
-        hash_data = request.files['encrypted.hash'].read().decode('utf-8').strip('"').strip()
+        hash_data = request.files['encrypted.hash'].read().decode('utf-8').strip('"').strip()  # Hash for file integrity
     
     else:
-        # Return error if neither the ZIP file nor the individual files are provided
+        # Return error if neither a ZIP file nor the required individual files are provided
         return jsonify({"error": "Please upload either 'encrypted_files.zip' or all required files (encrypted.enc, encrypted.nonces.json, encrypted.hash)"}), 400
 
     # Parse JSON data containing decryption parameters
     json_data = request.form.get('data')
     if not json_data:
+        # Return error if no JSON data is provided
         return jsonify({"error": "No JSON data provided"}), 400
     try:
         json_data = json.loads(json_data)
     except json.JSONDecodeError:
+        # Return error if the JSON data is invalid
         return jsonify({"error": "Invalid JSON data"}), 400
 
-    # Extract decryption parameters
-    selected_algos = json_data["selected_algos"]
-    all_passphrases = json_data["all_passphrases"]
-    filename = json_data["filename"]
-    all_salts = extract_salt(all_passphrases)
+    # Extract decryption parameters from JSON data
+    selected_algos = json_data["selected_algos"]  # Encryption algorithms used
+    all_passphrases = json_data["all_passphrases"]  # Passphrases for decryption
+    filename = json_data["filename"]  # Original filename of the PDF
+    all_salts = extract_salt(all_passphrases)  # Extract salts from passphrases
 
-    # Decrypt the PDF data
+    # Decrypt the PDF data using the provided parameters
     output = decrypt_pdf(encrypted_data, nonces_data, hash_data, selected_algos, all_passphrases, all_salts)
 
-    # Return the decrypted PDF data or an error message if decryption failed
+    # Return error if decryption fails due to incorrect password or tampered file
     if output is None:
         return jsonify({"error": "Decryption failed. Incorrect password or file tampered."}), 401
-    else:
-        pdf_stream = BytesIO(output)
-        pdf_stream.seek(0)
-        return send_file(pdf_stream, mimetype='application/pdf', as_attachment=True, download_name=f'{filename}_decrypted_file.pdf')
+
+    # List of standard fonts available in ReportLab
+    standard_fonts = [
+        "Times-Roman", "Times-Bold", "Times-Italic", "Times-BoldItalic",
+        "Helvetica", "Helvetica-Bold", "Helvetica-Oblique", "Helvetica-BoldOblique",
+        "Courier", "Courier-Bold", "Courier-Oblique", "Courier-BoldOblique",
+        "Symbol", "ZapfDingbats"
+    ]
+
+    # Function to validate hexadecimal color codes
+    def is_valid_hex_color(color):
+        if isinstance(color, str) and color.startswith('#') and len(color) == 7:
+            try:
+                int(color[1:], 16)  # Convert the hex code to an integer to validate
+                return True
+            except ValueError:
+                return False
+        return False
+
+    # Function to validate integer values within an optional range
+    def is_valid_integer(value, min_value=None, max_value=None):
+        try:
+            int_value = int(value)
+            if (min_value is not None and int_value < min_value) or (max_value is not None and int_value > max_value):
+                return False
+            return True
+        except (ValueError, TypeError):
+            return False
+
+    # Extract watermark parameters from JSON data or use defaults if not provided
+    watermark_text = json_data.get("watermark_text", "Confidential")  # Watermark text
+    watermark_color = json_data.get("watermark_color", "#FF0000")  # Watermark color
+    if not is_valid_hex_color(watermark_color):
+        watermark_color = "#FF0000"  # Default color if invalid
+
+    watermark_size = json_data.get("watermark_size", 50)  # Watermark font size
+    if not is_valid_integer(watermark_size, min_value=1):
+        watermark_size = 50  # Default size if invalid
+
+    watermark_angle = json_data.get("watermark_angle", 45)  # Watermark rotation angle
+    if not is_valid_integer(watermark_angle, min_value=-360, max_value=360):
+        watermark_angle = 45  # Default angle if invalid
+
+    watermark_opacity = json_data.get("watermark_opacity", 50)  # Watermark opacity percentage
+    if not is_valid_integer(watermark_opacity, min_value=0, max_value=100):
+        watermark_opacity = 50  # Default opacity if invalid
+
+    watermark_font = json_data.get("watermark_font", "Times-Roman")  # Watermark font
+    if watermark_font not in standard_fonts:
+        watermark_font = "Times-Roman"  # Default font if invalid
+
+    # Add watermark to the decrypted PDF data
+    watermark_output = add_watermark_to_pdf(output, watermark_text, watermark_color, watermark_opacity, watermark_font, watermark_size, watermark_angle)
+
+    # Prepare the watermarked PDF for download
+    pdf_stream = BytesIO(watermark_output)
+    pdf_stream.seek(0)
+    return send_file(pdf_stream, mimetype='application/pdf', as_attachment=True, download_name=f'{filename}_decrypted_file.pdf')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
