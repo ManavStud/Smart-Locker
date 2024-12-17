@@ -93,29 +93,35 @@ Decrypts an encrypted PDF file.
 - **Form Data:**
 
   - `data` (JSON string): Decryption parameters:
-```json
-{
-  "selected_algos": ["aes256"],
-  "all_passphrases": ["mypassword"],
-  "filename": "test",
-  "watermark_text": "Confidential",
-  "watermark_color": "#FF0000",
-  "watermark_size": 50,
-  "watermark_angle": 45,
-  "watermark_opacity": 50,
-  "watermark_font": "Helvetica"
-}
-```
+
+    ```json
+    {
+      "selected_algos": ["aes256"],
+      "all_passphrases": ["mypassword"],
+      "filename": "test",
+
+      "watermark_text": "Confidential",
+      "watermark_color": "#FF0000",
+      "watermark_size": 50,
+      "watermark_angle": 45,
+      "watermark_opacity": 50,
+      "watermark_font": "Helvetica", 
+      "watermark_row": 3,
+      "watermark_column":3
+    }
+    ```
+    
+    > Note: All Watermark Parameters are optional, and have a default Hard-coded value if no value is provided
 
 - **Response**
   - A watermarked, decrypted PDF file.
 
 - **Example**
-```bash
-curl -X POST -F "encrypted_files.zip=@path/to/encrypted_files.zip" \
-     -F 'data={"selected_algos": ["aes256"], "all_passphrases": ["mypassword"], "filename": "test", "watermark_text": "Confidential"}' \
-     http://localhost:5000/decrypt -o decrypted_file.pdf
-```
+    ```bash
+    curl -X POST -F "encrypted_files.zip=@path/to/encrypted_files.zip" \
+        -F 'data={"selected_algos": ["aes256"], "all_passphrases": ["mypassword"], "filename": "test", "watermark_text": "Confidential"}' \
+        http://localhost:5000/decrypt -o decrypted_file.pdf
+    ```
 
 ### Customization
 
@@ -166,38 +172,66 @@ To customize or enhance watermarking functionality, you can update the logic in 
   - color: RGB or HEX code for the watermark color.
   - angle: The rotation angle of the watermark (e.g., diagonal placement).
   - opacity: Transparency level of the watermark (0-100%).
+  - rows/columns: Number of Rows/Columns for Watermark Grid.
 
 2. Implementation: Use a PDF manipulation library like PyPDF2 or ReportLab to draw the watermark on each page of the PDF.
 
     Example implementation:
     ```python
-    from reportlab.pdfgen import canvas
-    from PyPDF2 import PdfReader, PdfWriter
     from io import BytesIO
+    from PyPDF2 import PdfReader, PdfWriter
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import letter8
+    from reportlab.lib import colors
 
-    def add_watermark_to_pdf(input_pdf_path, output_pdf_path, text, font, size, color, angle, opacity):
-        # Create a PDF with the watermark
-        watermark_buffer = BytesIO()
-        c = canvas.Canvas(watermark_buffer)
-        c.setFont(font, size)
-        c.setFillColorRGB(*color)  # Assuming color is an RGB tuple
-        c.translate(300, 500)  # Position the watermark
-        c.rotate(angle)
-        c.drawString(0, 0, text)
-        c.save()
 
-        watermark_buffer.seek(0)
-        watermark_pdf = PdfReader(watermark_buffer)
-        input_pdf = PdfReader(input_pdf_path)
-        output_pdf = PdfWriter()
+    def add_watermark_to_pdf(pdf_data, watermark_text, color_hex, opacity, font, size, angle, rows, columns):
+        packet = BytesIO()
+        can = canvas.Canvas(packet, pagesize=letter)
+        color = colors.HexColor(color_hex)
+        can.setFillColor(color, opacity / 100.0)
+        
+        # Page dimensions
+        page_width, page_height = letter
+        can.setFont(font, size)
+        
+        # Calculate precise spacing for grid alignment
+        x_spacing = page_width / columns  # Width of each column
+        y_spacing = page_height / rows    # Height of each row
+        
+        # Adjust for centering watermark within the grid cell
+        text_offset_x = -size * len(watermark_text) / 4  # Adjust text center horizontally
+        text_offset_y = -size / 2                       # Adjust text center vertically
+        
+        # Place watermarks at evenly spaced grid positions
+        for row in range(rows):
+            for col in range(columns):
+                x = col * x_spacing + (x_spacing / 2)  # Center horizontally in column
+                y = page_height - (row * y_spacing + (y_spacing / 2))  # Center vertically in row
+                can.saveState()
+                can.translate(x, y)
+                can.rotate(angle)
+                can.drawString(text_offset_x, text_offset_y, watermark_text)
+                can.restoreState()
+        
+        can.save()
+        packet.seek(0)
 
-        # Merge watermark with each page
-        for page in input_pdf.pages:
-            page.merge_page(watermark_pdf.pages[0])
-            output_pdf.add_page(page)
-
-        with open(output_pdf_path, 'wb') as output_file:
-            output_pdf.write(output_file)
+        # Merge watermark with the existing PDF pages
+        existing_pdf = PdfReader(BytesIO(pdf_data))
+        output = PdfWriter()
+        watermark_pdf = PdfReader(packet)
+        watermark_page = watermark_pdf.pages[0]
+        
+        for i in range(len(existing_pdf.pages)):
+            page = existing_pdf.pages[i]
+            page.merge_page(watermark_page)
+            output.add_page(page)
+        
+        output_stream = BytesIO()
+        output.write(output_stream)
+        
+        return output_stream.getvalue()
     ```
 
 3. Testing:
