@@ -7,7 +7,7 @@ import zipfile
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-import PyPDF2
+from PyPDF2 import PdfReader, PdfWriter
 from bin.keygen import gen_key  # Custom module to generate encryption keys
 from bin import *  # Import encryption and decryption functions
 
@@ -29,32 +29,42 @@ def extract_salt(passphrases):
     return [passphrase[1::2] if len(passphrase) % 2 == 0 else passphrase[0::2] for passphrase in passphrases]
 
 # Helper function: Add a watermark to the PDF
-def add_watermark_to_pdf(pdf_data, watermark_text, color_hex, opacity, font, size, angle):
+def add_watermark_to_pdf(pdf_data, watermark_text, color_hex, opacity, font, size, angle, rows, columns):
     packet = BytesIO()
     can = canvas.Canvas(packet, pagesize=letter)
     color = colors.HexColor(color_hex)
     can.setFillColor(color, opacity / 100.0)
     
-    width, height = letter
-    width, height = int(width), int(height)
+    # Page dimensions
+    page_width, page_height = letter
     can.setFont(font, size)
     
-    # Draw watermark across the page
-    for x in range(0, width, 200):
-        for y in range(0, height, 200):
+    # Calculate precise spacing for grid alignment
+    x_spacing = page_width / columns  # Width of each column
+    y_spacing = page_height / rows    # Height of each row
+    
+    # Adjust for centering watermark within the grid cell
+    text_offset_x = -size * len(watermark_text) / 4  # Adjust text center horizontally
+    text_offset_y = -size / 2                       # Adjust text center vertically
+    
+    # Place watermarks at evenly spaced grid positions
+    for row in range(rows):
+        for col in range(columns):
+            x = col * x_spacing + (x_spacing / 2)  # Center horizontally in column
+            y = page_height - (row * y_spacing + (y_spacing / 2))  # Center vertically in row
             can.saveState()
-            can.translate(x + 100, y + 100)
+            can.translate(x, y)
             can.rotate(angle)
-            can.drawString(-100, -20, watermark_text)
+            can.drawString(text_offset_x, text_offset_y, watermark_text)
             can.restoreState()
     
     can.save()
     packet.seek(0)
 
     # Merge watermark with the existing PDF pages
-    existing_pdf = PyPDF2.PdfReader(BytesIO(pdf_data))
-    output = PyPDF2.PdfWriter()
-    watermark_pdf = PyPDF2.PdfReader(packet)
+    existing_pdf = PdfReader(BytesIO(pdf_data))
+    output = PdfWriter()
+    watermark_pdf = PdfReader(packet)
     watermark_page = watermark_pdf.pages[0]
     
     for i in range(len(existing_pdf.pages)):
@@ -66,6 +76,7 @@ def add_watermark_to_pdf(pdf_data, watermark_text, color_hex, opacity, font, siz
     output.write(output_stream)
     
     return output_stream.getvalue()
+
 
 # Encrypt PDF data
 def encrypt_pdf(pdf_data, algorithms, all_passphrases, all_salts):
@@ -220,12 +231,21 @@ def decrypt():
     # Extract watermark parameters from JSON data or use defaults if not provided
     watermark_text = json_data.get("watermark_text", "Confidential")  # Watermark text
     watermark_color = json_data.get("watermark_color", "#FF0000")  # Watermark color
+
     if not is_valid_hex_color(watermark_color):
         watermark_color = "#FF0000"  # Default color if invalid
 
-    watermark_size = json_data.get("watermark_size", 50)  # Watermark font size
+    watermark_row = json_data.get("watermark_row", 3)  # Watermark font size
+    if not is_valid_integer(watermark_row, min_value=1):
+        watermark_row = 3  # Default size if invalid
+
+    watermark_column = json_data.get("watermark_column", 3)  # Watermark font size
+    if not is_valid_integer(watermark_column, min_value=1):
+        watermark_column = 3  # Default size if invalid
+
+    watermark_size = json_data.get("watermark_size", 40)  # Watermark font size
     if not is_valid_integer(watermark_size, min_value=1):
-        watermark_size = 50  # Default size if invalid
+        watermark_size = 40  # Default size if invalid
 
     watermark_angle = json_data.get("watermark_angle", 45)  # Watermark rotation angle
     if not is_valid_integer(watermark_angle, min_value=-360, max_value=360):
@@ -240,7 +260,7 @@ def decrypt():
         watermark_font = "Times-Roman"  # Default font if invalid
 
     # Add watermark to the decrypted PDF data
-    watermark_output = add_watermark_to_pdf(output, watermark_text, watermark_color, watermark_opacity, watermark_font, watermark_size, watermark_angle)
+    watermark_output = add_watermark_to_pdf(output, watermark_text, watermark_color, watermark_opacity, watermark_font, watermark_size, watermark_angle, watermark_row, watermark_column)
 
     # Prepare the watermarked PDF for download
     pdf_stream = BytesIO(watermark_output)
