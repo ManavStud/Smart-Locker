@@ -286,7 +286,7 @@
     background: rgba(63, 70, 84, 0.5);
     border-radius: 15px;
   }
-  
+/*i want the tab buttons to be at the bottom of the div*/
   .tabs {
     display: flex;
     gap: 20px;
@@ -301,6 +301,7 @@
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     padding: 20px;
+    padding-bottom: 10px;
   }
 
   .tabs button {
@@ -309,11 +310,13 @@
     color: #888;
     cursor: pointer;
     font-size: 1em;
+    margin-bottom: 0px;
   }
 
   .tabs button.active {
     border-bottom: 2px solid #00c8ff;
     color: #fff;
+    margin-bottom: 0px;
   }
 
 .box{
@@ -339,6 +342,7 @@
   width: 100%;
   border-radius: 25px;
   overflow: hidden;
+  margin-top: 0px;
   box-shadow: 0 25px 45px rgba(0, 0, 0, .2);
 }
 
@@ -420,8 +424,8 @@
   <!-- Main Content -->
     <div class="main-container">
         <div class="title">Smart Locker</div>
-        <div class="subtitle">Share File</div>
-        <div class="subtitle">New Chat</div>
+        <div class="subtitle" onclick="sharefile()">Share File</div>
+        <div class="subtitle" onclick="newchat()">New Chat</div>
 
         <div class="cards1">
             <div class="card1"></div>
@@ -461,11 +465,11 @@
         <table class="table table-dark table-striped">
           <thead>
             <tr>
-              <th scope="col">FileName</th>
-              <th scope="col">Sender</th>
-              <th scope="col">Reciever</th>
-              <th scope="col">Date Of Expiry</th>
-              <th scope="col">Date Of Creation</th>
+              <th scope="col" onclick="sortTable(0)">FileName↓</th>
+              <th scope="col" onclick="sortTable(1)">Sender↓</th>
+              <th scope="col" onclick="sortTable(2)">Reciever↓</th>
+              <th scope="col" onclick="sortTable(3)">Date Of Expiry↓</th>
+              <th scope="col" onclick="sortTable(4)">Date Of Creation↓</th>
               <th scope="col">Edit</th>
             </tr>
           </thead>
@@ -542,6 +546,12 @@
         cards1.style.width = 'auto';
     }
   }
+  function sharefile(){
+    alert("File shared");
+  }
+  function newchat(){
+    alert("new chat added");
+  }
 
   function toggleNav(nav) {
     const dashboardBtn = document.querySelector('.nav-btn:nth-child(1)');
@@ -588,6 +598,44 @@ document.querySelectorAll('.tabs button').forEach((button, index) => {
     }
   });
 });
+
+//table sorting
+function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.querySelector(".table");
+    switching = true;
+    dir = "asc";
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
